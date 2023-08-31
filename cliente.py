@@ -1,12 +1,18 @@
-
 import socket
 
-HOST = "127.0.0.1"  # dominio  o IP del servidor
-PORT = 54321  # el puerto del servidor
+HOST = "127.0.0.1"
+PORT = 54321
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall("Hola soy el cliente")
-    data = s.recv(1024)
+def enviarMsm(msm):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, PORT))
+        s.sendall(msm.encode())  # Enviamos el mensaje como bytes
+        data = s.recv(1024).decode()  # Recibimos la respuesta y la convertimos a string
+        return data
 
-print("Received {data!r}")
+while True:
+    msm = input("Ingrese un mensaje: ")
+    if msm.lower() == 'exit':
+        break
+    response =  enviarMsm(msm)
+    print("Respuesta:", response)
